@@ -1,4 +1,5 @@
 use sea_schema::migration::prelude::*;
+use entity::movie::*;
 
 pub struct Migration;
 
@@ -24,7 +25,7 @@ impl MigrationTrait for Migration {
                             .primary_key(),
                     )
                     .col(ColumnDef::new(Column::Title).string().not_null())
-                    .col(ColumnDef::new(Column::RunTime).string().not_null())
+                    .col(ColumnDef::new(Column::Runtime).string().not_null())
                     .to_owned(),
             )
             .await
