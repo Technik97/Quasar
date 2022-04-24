@@ -1,6 +1,7 @@
 use actix_web::{
     App, HttpRequest, HttpResponse, HttpServer, Result, Responder, middleware, web, get
 };
+use actix_cors::Cors;
 use entity::{movie, sea_orm::EntityTrait};
 use entity::movie::Entity as Movie;
 use entity::sea_orm;
@@ -49,15 +50,20 @@ async fn main() -> std::io::Result<()> {
     let port = env::var("PORT").expect("PORT is not set in .env file");
     let server_url = format!("{}:{}", host, port);
 
+    // let client_url = env::var("CLIENT_URL").expect("CLIENT_URL is not set in .env file");
+
     let conn = sea_orm::Database::connect(&db_url).await.unwrap();
     Migrator::up(&conn, None).await.unwrap();
 
     let state = AppState { conn };
 
     let mut server = HttpServer::new(move || {
+        let cors = Cors::permissive();
+
         App::new()
             .data(state.clone())
             .wrap(middleware::Logger::default())
+            .wrap(cors)
             .configure(init)
     });
 
