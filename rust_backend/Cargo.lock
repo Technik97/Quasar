@@ -1758,6 +1758,7 @@ dependencies = [
  "listenfd",
  "migration",
  "serde",
+ "serde_json",
  "tracing-subscriber",
 ]
 
