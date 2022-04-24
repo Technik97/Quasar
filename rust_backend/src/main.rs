@@ -1,11 +1,12 @@
 use actix_web::{
-    App, HttpRequest, HttpResponse, HttpServer, Result, Responder, middleware, web
+    App, HttpRequest, HttpResponse, HttpServer, Result, Responder, middleware, web, get
 };
-use entity::movie;
+use entity::{movie, sea_orm::EntityTrait};
 use entity::movie::Entity as Movie;
 use entity::sea_orm;
-
+use serde_json::to_string;
 use listenfd::ListenFd;
+use serde::Serialize;
 use std::env;
 use migration::{Migrator, MigratorTrait};
 use sea_orm::DatabaseConnection;
@@ -13,6 +14,26 @@ use sea_orm::DatabaseConnection;
 #[derive(Debug, Clone)]
 struct AppState {
     conn: DatabaseConnection,
+}
+
+
+#[get("/")]
+async fn index(
+    data: web::Data<AppState>
+) -> HttpResponse {
+    let conn = &data.conn;
+
+    let movies: Vec<movie::Model> = Movie::find()
+                                        .all(conn)
+                                        .await
+                                        .unwrap();
+
+    let body = to_string(&movies).unwrap();
+    
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .body(body)
+    
 }
 
 #[actix_web::main]
@@ -51,5 +72,5 @@ async fn main() -> std::io::Result<()> {
     Ok(())
 }
 pub fn init(cfg: &mut web::ServiceConfig) {
-
+    cfg.service(index);
 }
