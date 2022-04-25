@@ -1,3 +1,5 @@
+## :warning:  Work in Progress :warning:
+
 # Quasar
 
 This is a project using Rust backend and Svelte frontend 
@@ -23,8 +25,7 @@ This is a project using Rust backend and Svelte frontend
 * The application will be launched on localhost:port, where port is port variable defined in .env file.
 ---
 #### Frontend Stack
-* For frontend we'll be using <strong>Typescript</strong> programming language, <strong>Svelte</strong> web framework, for styling we'll use <strong>Tailwind</strong> css framework and <strong> Alpinejs </strong> for adding javascript behaviour.
----
+* For frontend we'll be using <strong>Typescript</strong> programming language, <strong>Svelte</strong> web framework, for styling we'll use <strong>Tailwind</strong> css framework.
 
 #### Launching Frontend
 * Pre-Requisites
