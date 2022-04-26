@@ -13,7 +13,23 @@ pub struct Model {
 
 }
 
-#[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
-pub enum Relation {}
+#[derive(Copy, Clone, Debug, EnumIter)]
+pub enum Relation {
+    Movie,
+}
+
+impl RelationTrait for Relation {
+    fn def(&self) -> RelationDef {
+        match self {
+            Self::Movie => Entity::has_many(super::movie::Entity).into(),
+        }
+    }
+}
+
+impl Related<super::movie::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Movie.def()
+    }
+}
 
 impl ActiveModelBehavior for ActiveModel {}
