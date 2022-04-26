@@ -2,8 +2,9 @@ use actix_web::{
     App, HttpRequest, HttpResponse, HttpServer, Result, Responder, middleware, web, get
 };
 use actix_cors::Cors;
-use entity::{movie, sea_orm::EntityTrait};
+use entity::{movie, production ,sea_orm::EntityTrait};
 use entity::movie::Entity as Movie;
+use entity::production::Entity as Production;
 use entity::sea_orm;
 use serde_json::to_string;
 use listenfd::ListenFd;
@@ -24,7 +25,8 @@ async fn index(
 ) -> HttpResponse {
     let conn = &data.conn;
 
-    let movies: Vec<movie::Model> = Movie::find()
+    let movies: Vec<(movie::Model, Option<production::Model>)> = Movie::find()
+                                        .find_also_related(Production)
                                         .all(conn)
                                         .await
                                         .unwrap();
@@ -36,6 +38,8 @@ async fn index(
         .body(body)
     
 }
+
+
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
