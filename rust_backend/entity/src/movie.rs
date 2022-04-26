@@ -12,9 +12,30 @@ pub struct Model {
     pub title: String,
 
     pub runtime: String,
+
+    pub production_id: i32,
 }
 
-#[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
-pub enum Relation {}
+#[derive(Copy, Clone, Debug, EnumIter)]
+pub enum Relation {
+    Production,
+}
+
+impl RelationTrait for Relation {
+    fn def(&self) -> RelationDef {
+        match self {
+            Self::Production => Entity::belongs_to(super::production::Entity)
+                .from(Column::ProductionId)
+                .to(super::production::Column::Id)
+                .into(),
+        }
+    }
+}
+
+impl Related<super::production::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Production.def()
+    }
+}
 
 impl ActiveModelBehavior for ActiveModel {}
