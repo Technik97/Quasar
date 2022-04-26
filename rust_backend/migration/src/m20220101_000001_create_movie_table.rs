@@ -26,6 +26,7 @@ impl MigrationTrait for Migration {
                     )
                     .col(ColumnDef::new(Column::Title).string().not_null())
                     .col(ColumnDef::new(Column::Runtime).string().not_null())
+                    .col(ColumnDef::new(Column::ProductionId).integer().not_null())
                     .to_owned(),
             )
             .await
