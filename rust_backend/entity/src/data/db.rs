@@ -1,5 +1,5 @@
-use entity::sea_orm::entity::prelude::*;
-use entity::sea_orm::Database;
+use sea_orm::entity::prelude::*;
+use sea_orm::Database;
 use tokio::sync::OnceCell;
 use std::env;
 
