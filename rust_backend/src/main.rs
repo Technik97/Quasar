@@ -5,19 +5,11 @@ use actix_cors::Cors;
 use entity::{movie, production ,sea_orm::EntityTrait};
 use entity::movie::Entity as Movie;
 use entity::production::Entity as Production;
-use entity::sea_orm;
 use serde_json::to_string;
 use listenfd::ListenFd;
 use migration::{Migrator, MigratorTrait};
-use sea_orm::DatabaseConnection;
-
-mod data;
-use crate::data::db;
-
-#[derive(Debug, Clone)]
-struct AppState {
-    conn: DatabaseConnection
-}
+use entity::data::app_state::AppState;
+use entity::data::db;
 
 #[get("/")]
 async fn index(
