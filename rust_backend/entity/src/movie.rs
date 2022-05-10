@@ -1,6 +1,9 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
+use crate::data::db::get_conn;
+
+
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Deserialize, Serialize)]
 #[sea_orm(table_name = "movies")]
 pub struct Model {
@@ -39,3 +42,14 @@ impl Related<super::production::Entity> for Entity {
 }
 
 impl ActiveModelBehavior for ActiveModel {}
+
+
+pub async fn get_movies() -> Vec<Model> {
+    let conn = get_conn().await;
+    
+    Entity::find()
+        .all(conn)
+        .await
+        .unwrap()
+        // .map_err(|e| anyhow::anyhow!(e))
+}
