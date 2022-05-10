@@ -1,35 +1,15 @@
 use actix_web::{
-    App, HttpResponse, HttpServer, middleware, web, get
+    App, HttpServer, middleware, web
 };
 use actix_cors::Cors;
-use entity::{movie, production ,sea_orm::EntityTrait};
-use entity::movie::Entity as Movie;
-use entity::production::Entity as Production;
-use serde_json::to_string;
 use listenfd::ListenFd;
 use migration::{Migrator, MigratorTrait};
 use entity::data::app_state::AppState;
 use entity::data::db;
 
-#[get("/")]
-async fn index(
-    data: web::Data<AppState>
-) -> HttpResponse {
-    let conn = &data.conn;
-    //(movie::Model, Option<production::Model>)
-    let movies: Vec<(movie::Model, Option<production::Model>)> = Movie::find()
-                                        .find_also_related(Production)
-                                        .all(conn)
-                                        .await
-                                        .unwrap();
+mod controller;
+use controller::movie as MovieController;
 
-    let body = to_string(&movies).unwrap();
-    
-    HttpResponse::Ok()
-        .content_type("application/json")
-        .body(body)
-    
-}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -67,5 +47,5 @@ async fn main() -> std::io::Result<()> {
 }
 
 pub fn init(cfg: &mut web::ServiceConfig) {
-    cfg.service(index);
+    cfg.service(MovieController::index);
 }
