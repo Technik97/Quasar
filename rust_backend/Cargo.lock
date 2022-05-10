@@ -835,8 +835,11 @@ dependencies = [
 name = "entity"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
+ "dotenv",
  "sea-orm",
  "serde",
+ "tokio",
 ]
 
 [[package]]
@@ -1775,14 +1778,12 @@ dependencies = [
  "actix-cors",
  "actix-http",
  "actix-web",
- "anyhow",
  "dotenv",
  "entity",
  "listenfd",
  "migration",
  "serde",
  "serde_json",
- "tokio",
  "tracing-subscriber",
 ]
 
