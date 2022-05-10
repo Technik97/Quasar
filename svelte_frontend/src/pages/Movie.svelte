@@ -1,28 +1,26 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { movies_url } from '../api_url';
     import MovieCard from '../components/MovieCard.svelte';
-
-    interface Movie {
-        id: Number,
-        title: String,
-        runtime: String,
-    }
+    import type {MovieResponse} from '../data/IMovie'
     
-    let movies: Movie[];
+    let fetched_data: MovieResponse;
 
     onMount(async () => {
-        await fetch(`http://localhost:8000/`)
+        await fetch(movies_url)
             .then(r => r.json())
             .then(data => {
-                movies = data
+                fetched_data = data;
             });
     })
 </script>
 
 <div>
-    {#if movies}
-    {#each movies as movie }   
-        <MovieCard {movie} />
+    {#if fetched_data}
+    {#each fetched_data.movies as movie }   
+        <div>
+            <MovieCard {movie} />
+        </div>
     {/each}
     {:else}
         <p class="loading">loading...</p>
