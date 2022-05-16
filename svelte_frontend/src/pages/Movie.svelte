@@ -15,7 +15,7 @@
     })
 </script>
 
-<div>
+<div class="grid grid-cols-3 gap-3">
     {#if fetched_data}
     {#each fetched_data.movies as movie }   
         <div>
